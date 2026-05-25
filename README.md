@@ -1,2 +1,3 @@
-# SavePlate-Project
-Smart Food Waste Reduction App
+# SavePlate
+Smart Inventory and Food Sharing application to Reduce Food Waste.
+
