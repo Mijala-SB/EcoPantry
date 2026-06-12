@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="EcoPantry" company="SavePlate" webLink="http://" view-date="2026-06-07" view-index="0" gantt-divider-location="285" resource-divider-location="300" version="3.3.3316" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="EcoPantry" company="SavePlate" webLink="http://" view-date="2026-05-17" view-index="0" gantt-divider-location="288" resource-divider-location="300" version="3.3.3316" locale="en_US">
     <description/>
-    <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd3" name="Name" width="153" order="0"/>
-        <field id="tpd4" name="Begin date" width="58" order="1"/>
-        <field id="tpd5" name="End date" width="58" order="2"/>
+    <view zooming-state="default:5" id="gantt-chart">
+        <field id="tpd3" name="Name" width="154" order="0"/>
+        <field id="tpd4" name="Begin date" width="59" order="1"/>
+        <field id="tpd5" name="End date" width="59" order="2"/>
         <field id="tpd15" name="Notes" width="20" order="3"/>
         <option id="filter.completedTasks" value="false"/>
         <option id="filter.dueTodayTasks" value="false"/>
@@ -39,64 +39,64 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" uid="59d161789b2048f4a920abe61ed41c9b" name="Planing" color="#000000" meeting="false" start="2026-04-28" duration="6" complete="100" priority="2" expand="true">
+        <task id="0" uid="59d161789b2048f4a920abe61ed41c9b" name="Planing" color="#000000" meeting="false" start="2026-05-20" duration="9" complete="100" priority="2" expand="true">
             <depend id="1" type="2" difference="0" hardness="Strong"/>
-            <task id="5" uid="66a58f88625246b88b8dbe8435034694" name="Brainstroming" color="#006666" meeting="false" start="2026-04-28" duration="1" complete="100" priority="2" expand="true">
+            <task id="5" uid="66a58f88625246b88b8dbe8435034694" name="Brainstroming" color="#006666" meeting="false" start="2026-05-20" duration="1" complete="100" priority="2" expand="true">
                 <depend id="6" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="6" uid="b6a16bc7ebd64847a259b766db931ea5" name="Feasibility Study" color="#000000" meeting="false" start="2026-04-29" duration="5" complete="100" expand="true">
-                <task id="7" uid="53181febae2743eba812fc9422c0e140" name="Requriement Analysis" color="#9999ff" meeting="false" start="2026-04-29" duration="1" complete="100" expand="true"/>
-                <task id="8" uid="4aae165619c049498a93b1425986d53a" name="Target User Research" color="#6666ff" meeting="false" start="2026-04-30" duration="2" complete="100" expand="true"/>
-                <task id="9" uid="36e7ebc4983c4e54a52c02261dfd4c92" name="Food Waste Problem Analysis" color="#0000ff" meeting="false" start="2026-05-04" duration="2" complete="100" expand="true"/>
+            <task id="6" uid="b6a16bc7ebd64847a259b766db931ea5" name="Feasibility Study" color="#000000" meeting="false" start="2026-05-25" duration="6" complete="100" expand="true">
+                <task id="7" uid="53181febae2743eba812fc9422c0e140" name="Requriement Analysis" color="#9999ff" meeting="false" start="2026-05-25" duration="1" complete="100" expand="true"/>
+                <task id="8" uid="4aae165619c049498a93b1425986d53a" name="Target User Research" color="#6666ff" meeting="false" start="2026-05-26" duration="2" complete="100" expand="true"/>
+                <task id="9" uid="36e7ebc4983c4e54a52c02261dfd4c92" name="Food Waste Problem Analysis" color="#0000ff" meeting="false" start="2026-05-29" duration="2" complete="100" expand="true"/>
             </task>
         </task>
-        <task id="1" uid="60a0213c904e48a8882ed8a6b2e1580d" name="Design" color="#ff6666" meeting="false" start="2026-05-06" duration="13" complete="80" expand="true">
+        <task id="1" uid="60a0213c904e48a8882ed8a6b2e1580d" name="Design" color="#ff6666" meeting="false" start="2026-06-02" duration="17" complete="80" expand="true">
             <depend id="2" type="2" difference="0" hardness="Strong"/>
-            <task id="10" uid="0ccd2863d72d43c2bcea0c81b71caecc" name="Structure Diagram" color="#000000" meeting="false" start="2026-05-06" duration="6" complete="100" expand="true">
+            <task id="10" uid="0ccd2863d72d43c2bcea0c81b71caecc" name="Structure Diagram" color="#000000" meeting="false" start="2026-06-02" duration="10" complete="100" expand="true">
                 <depend id="14" type="2" difference="0" hardness="Strong"/>
-                <task id="11" uid="d18ed31e14664c199e1404545c7bc700" name="Class Diagram" color="#669900" meeting="false" start="2026-05-06" duration="3" complete="100" expand="true"/>
-                <task id="12" uid="5f1549ca6f9f4f808d92e77041a28aff" name="Flow Chart" color="#99cc00" meeting="false" start="2026-05-08" duration="2" complete="100" expand="true"/>
-                <task id="13" uid="9a67bbd09e654848babfd2680cf5e40f" name="ER Diagram" color="#ff33cc" meeting="false" start="2026-05-12" duration="2" complete="100" expand="true"/>
+                <task id="11" uid="d18ed31e14664c199e1404545c7bc700" name="Class Diagram" color="#669900" meeting="false" start="2026-06-02" duration="3" complete="100" expand="true"/>
+                <task id="12" uid="5f1549ca6f9f4f808d92e77041a28aff" name="Flow Chart" color="#99cc00" meeting="false" start="2026-06-08" duration="2" complete="100" expand="true"/>
+                <task id="13" uid="9a67bbd09e654848babfd2680cf5e40f" name="ER Diagram" color="#ff33cc" meeting="false" start="2026-06-12" duration="2" complete="100" expand="true"/>
             </task>
-            <task id="14" uid="71f8d746a4414307a645794faf364ea4" name="UI/UX Design" color="#000000" meeting="false" start="2026-05-14" duration="7" complete="60" expand="true">
-                <task id="15" uid="0fba016782f54e718921d2598a667f89" name="WireFrames" color="#66ffcc" meeting="false" start="2026-05-14" duration="3" complete="75" priority="2" expand="true"/>
-                <task id="16" uid="2f951b11bfe44f10ae410d8afd69c56b" name="Prorotype(Mobile screens)" color="#ff9999" meeting="false" start="2026-05-19" duration="4" complete="50" priority="2" expand="true"/>
+            <task id="14" uid="71f8d746a4414307a645794faf364ea4" name="UI/UX Design" color="#000000" meeting="false" start="2026-06-16" duration="7" complete="60" expand="true">
+                <task id="15" uid="0fba016782f54e718921d2598a667f89" name="WireFrames" color="#66ffcc" meeting="false" start="2026-06-16" duration="3" complete="75" priority="2" expand="true"/>
+                <task id="16" uid="2f951b11bfe44f10ae410d8afd69c56b" name="Prorotype(Mobile screens)" color="#ff9999" meeting="false" start="2026-06-19" duration="4" complete="50" priority="2" expand="true"/>
             </task>
         </task>
-        <task id="2" uid="18f1602138094f3eb994d1022c0f13a8" name="Development" color="#ffff00" meeting="false" start="2026-05-25" duration="25" complete="3" priority="4" expand="true">
+        <task id="2" uid="18f1602138094f3eb994d1022c0f13a8" name="Development" color="#ffff00" meeting="false" start="2026-06-25" duration="24" complete="3" priority="4" expand="true">
             <depend id="3" type="2" difference="0" hardness="Strong"/>
-            <task id="17" uid="6a0c7a38888a47feac34368b7dc356a2" name="User Registration and login module" color="#000000" meeting="false" start="2026-05-25" duration="5" complete="18" expand="true">
+            <task id="17" uid="6a0c7a38888a47feac34368b7dc356a2" name="User Registration and login module" color="#000000" meeting="false" start="2026-06-25" duration="4" complete="18" expand="true">
                 <depend id="20" type="2" difference="0" hardness="Strong"/>
-                <task id="18" uid="12f1ecf4f3cb496e804931653aa85378" name="Secure Sign-up" color="#ccffcc" meeting="false" start="2026-05-25" duration="3" complete="30" expand="true"/>
-                <task id="19" uid="a88db5237adc4d1db3deb4efe5320c9d" name="Login Authentication" color="#99ff99" meeting="false" start="2026-05-28" duration="2" complete="0" expand="true"/>
+                <task id="18" uid="12f1ecf4f3cb496e804931653aa85378" name="Secure Sign-up" color="#ccffcc" meeting="false" start="2026-06-25" duration="3" complete="30" expand="true"/>
+                <task id="19" uid="a88db5237adc4d1db3deb4efe5320c9d" name="Login Authentication" color="#99ff99" meeting="false" start="2026-06-29" duration="2" complete="0" expand="true"/>
             </task>
-            <task id="20" uid="16526dfb1e5e4902bb2692337d318ffc" name="Food Inventory Module" color="#000000" meeting="false" start="2026-06-01" duration="8" complete="0" expand="true">
+            <task id="20" uid="16526dfb1e5e4902bb2692337d318ffc" name="Food Inventory Module" color="#000000" meeting="false" start="2026-07-01" duration="8" complete="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
-                <task id="21" uid="3f2220168ae14a1f906260b07a16e47d" name="Add/Edit Food Items" color="#0033cc" meeting="false" start="2026-06-01" duration="3" complete="0" expand="true"/>
-                <task id="22" uid="40d42c34ede34f67a1847a482e9f3c70" name="Food Logging System" color="#0066ff" meeting="false" start="2026-06-04" duration="3" complete="0" expand="true"/>
-                <task id="23" uid="5bd50e8e206b4995b6fc795c6e86b5d4" name="Manual expiry data input" color="#33ccff" meeting="false" start="2026-06-09" duration="2" complete="0" expand="true"/>
+                <task id="21" uid="3f2220168ae14a1f906260b07a16e47d" name="Add/Edit Food Items" color="#0033cc" meeting="false" start="2026-07-01" duration="3" complete="0" expand="true"/>
+                <task id="22" uid="40d42c34ede34f67a1847a482e9f3c70" name="Food Logging System" color="#0066ff" meeting="false" start="2026-07-06" duration="3" complete="0" expand="true"/>
+                <task id="23" uid="5bd50e8e206b4995b6fc795c6e86b5d4" name="Manual expiry data input" color="#33ccff" meeting="false" start="2026-07-09" duration="2" complete="0" expand="true"/>
             </task>
-            <task id="24" uid="88420055f32d483d9528ce0929e8254a" name="Notification Module" color="#000000" meeting="false" start="2026-06-11" duration="6" complete="0" expand="true">
+            <task id="24" uid="88420055f32d483d9528ce0929e8254a" name="Notification Module" color="#000000" meeting="false" start="2026-07-13" duration="6" complete="0" expand="true">
                 <depend id="27" type="2" difference="0" hardness="Strong"/>
-                <task id="25" uid="7a33b4866346499caef3f65314711843" name="Real-time Expirey Alert" color="#ccffff" meeting="false" start="2026-06-11" duration="3" complete="0" expand="true"/>
-                <task id="26" uid="706c964e20454cccb8374038a63578bf" name="Weekly food Tracker" color="#3399ff" meeting="false" start="2026-06-16" duration="3" complete="0" expand="true"/>
+                <task id="25" uid="7a33b4866346499caef3f65314711843" name="Real-time Expirey Alert" color="#ccffff" meeting="false" start="2026-07-13" duration="3" complete="0" expand="true"/>
+                <task id="26" uid="706c964e20454cccb8374038a63578bf" name="Weekly food Tracker" color="#3399ff" meeting="false" start="2026-07-16" duration="3" complete="0" expand="true"/>
             </task>
-            <task id="27" uid="a8d63ae3ea31467bad0def16021a6335" name="Food Sharing module" color="#000000" meeting="false" start="2026-06-19" duration="6" complete="0" expand="true">
-                <task id="28" uid="af940d2bb7c44af9a5ba028a04bc73a4" name="Donate Food Feature" color="#ffcccc" meeting="false" start="2026-06-19" duration="3" complete="0" expand="true"/>
-                <task id="29" uid="eeecfeb9d2f3403fba5aea5d98d8836c" name="Pick-up Food Feature" color="#ff6666" meeting="false" start="2026-06-24" duration="3" complete="0" expand="true"/>
+            <task id="27" uid="a8d63ae3ea31467bad0def16021a6335" name="Food Sharing module" color="#000000" meeting="false" start="2026-07-21" duration="6" complete="0" expand="true">
+                <task id="28" uid="af940d2bb7c44af9a5ba028a04bc73a4" name="Donate Food Feature" color="#ffcccc" meeting="false" start="2026-07-21" duration="3" complete="0" expand="true"/>
+                <task id="29" uid="eeecfeb9d2f3403fba5aea5d98d8836c" name="Pick-up Food Feature" color="#ff6666" meeting="false" start="2026-07-24" duration="3" complete="0" expand="true"/>
             </task>
         </task>
-        <task id="3" uid="e389e30615e541299527c3a296b6919c" name="Testing" color="#9999ff" meeting="false" start="2026-06-29" duration="9" complete="0" priority="4" expand="true">
+        <task id="3" uid="e389e30615e541299527c3a296b6919c" name="Testing" color="#9999ff" meeting="false" start="2026-07-29" duration="10" complete="0" priority="4" expand="true">
             <depend id="4" type="2" difference="0" hardness="Strong"/>
-            <task id="30" uid="f6209eed3eca4d6f888f7648c9b7b283" name="Unit Testing" color="#8cb6ce" meeting="false" start="2026-06-29" duration="2" complete="0" expand="true"/>
-            <task id="31" uid="767c8ea646e9482b8d010d2a0162e9d2" name="Integration Testing" color="#8cb6ce" meeting="false" start="2026-07-01" duration="2" complete="0" expand="true"/>
-            <task id="32" uid="7d82fdf9b82544e0bfaf194113b65892" name="UI/UX Testing" color="#8cb6ce" meeting="false" start="2026-07-03" duration="2" complete="0" expand="true"/>
-            <task id="33" uid="c5216238ab174980853af09819d21c8a" name="User Acceptance Testing" color="#8cb6ce" meeting="false" start="2026-07-07" duration="3" complete="0" expand="true"/>
+            <task id="30" uid="f6209eed3eca4d6f888f7648c9b7b283" name="Unit Testing" color="#8cb6ce" meeting="false" start="2026-07-29" duration="2" complete="0" expand="true"/>
+            <task id="31" uid="767c8ea646e9482b8d010d2a0162e9d2" name="Integration Testing" color="#8cb6ce" meeting="false" start="2026-08-03" duration="2" complete="0" expand="true"/>
+            <task id="32" uid="7d82fdf9b82544e0bfaf194113b65892" name="UI/UX Testing" color="#8cb6ce" meeting="false" start="2026-08-03" duration="2" complete="0" expand="true"/>
+            <task id="33" uid="c5216238ab174980853af09819d21c8a" name="User Acceptance Testing" color="#8cb6ce" meeting="false" start="2026-08-07" duration="3" complete="0" expand="true"/>
         </task>
-        <task id="4" uid="a74bd8c236b244dc80e88c50cc629ee0" name="Deployment" color="#00cccc" meeting="false" start="2026-07-10" duration="7" complete="0" priority="2" expand="true">
-            <task id="34" uid="39928e6beb2f426490623a22150357f2" name="App Store Submission" color="#8cb6ce" meeting="false" start="2026-07-10" duration="2" complete="0" expand="true"/>
-            <task id="35" uid="892e66efad6c4f0fb8ee14951ca37802" name="User Documentation" color="#8cb6ce" meeting="false" start="2026-07-14" duration="2" complete="0" expand="true"/>
-            <task id="36" uid="a986c127165348759abadabf9e47baec" name="Project Report Finalisation" color="#8cb6ce" meeting="false" start="2026-07-16" duration="3" complete="0" expand="true"/>
+        <task id="4" uid="a74bd8c236b244dc80e88c50cc629ee0" name="Deployment" color="#00cccc" meeting="false" start="2026-08-12" duration="6" complete="0" priority="2" expand="true">
+            <task id="34" uid="39928e6beb2f426490623a22150357f2" name="App Store Submission" color="#8cb6ce" meeting="false" start="2026-08-12" duration="2" complete="0" expand="true"/>
+            <task id="35" uid="892e66efad6c4f0fb8ee14951ca37802" name="User Documentation" color="#8cb6ce" meeting="false" start="2026-08-14" duration="2" complete="0" expand="true"/>
+            <task id="36" uid="a986c127165348759abadabf9e47baec" name="Project Report Finalisation" color="#8cb6ce" meeting="false" start="2026-08-17" duration="3" complete="0" expand="true"/>
         </task>
     </tasks>
     <resources/>
