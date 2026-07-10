@@ -1,0 +1,29 @@
+package com.ecopantry.app.data
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface FoodLogTableDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(log: FoodLogTable)
+
+    @Query("SELECT * FROM food_log_table WHERE user_id = :userId ORDER BY timestamp DESC")
+    fun getAllForUser(userId: String): Flow<List<FoodLogTable>>
+
+    @Query(
+        "SELECT * FROM food_log_table WHERE user_id = :userId AND timestamp BETWEEN :start AND :end " +
+        "ORDER BY timestamp DESC"
+    )
+    fun getByDateRange(userId: String, start: Long, end: Long): Flow<List<FoodLogTable>>
+
+    @Query(
+        "SELECT COUNT(*) FROM food_log_table WHERE user_id = :userId AND action_type = :actionType " +
+        "AND timestamp BETWEEN :start AND :end"
+    )
+    suspend fun countByAction(userId: String, actionType: String, start: Long, end: Long): Int
+}

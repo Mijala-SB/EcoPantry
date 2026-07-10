@@ -1,0 +1,41 @@
+package com.ecopantry.app.data
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ecopantry.app.model.FoodCategory
+import com.ecopantry.app.model.FoodStatus
+import com.ecopantry.app.model.StorageArea
+import java.util.UUID
+
+/** Household food inventory item (Table 11, Task 2 / FR05-FR07). */
+@Entity(tableName = "food_item_table")
+data class FoodItemTable(
+    @PrimaryKey
+    @ColumnInfo(name = "item_id")
+    val itemId: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "user_id")
+    val userId: String,
+    @ColumnInfo(name = "item_name")
+    val itemName: String,
+    @ColumnInfo(name = "quantity")
+    val quantity: String,
+    @ColumnInfo(name = "expiry_date")
+    val expiryDate: Long?,
+    @ColumnInfo(name = "category")
+    val category: FoodCategory = FoodCategory.OTHER,
+    @ColumnInfo(name = "storage_location")
+    val storageLocation: StorageArea = StorageArea.OTHER,
+    @ColumnInfo(name = "remarks")
+    val remarks: String = "",
+    @ColumnInfo(name = "status")
+    val status: FoodStatus = FoodStatus.ACTIVE,
+    @ColumnInfo(name = "is_public")
+    val isPublic: Boolean = false,
+    @ColumnInfo(name = "linked_donation_id")
+    val linkedDonationId: String? = null,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updated_at")
+    val updatedAt: Long = System.currentTimeMillis()
+)
