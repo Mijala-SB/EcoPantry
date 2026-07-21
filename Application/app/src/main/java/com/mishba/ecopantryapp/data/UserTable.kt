@@ -1,0 +1,29 @@
+package com.mishba.ecopantryapp.data
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+/**
+ * Local (Room/SQLite) cache of the signed-in user's profile.
+ * The authoritative record lives in Firebase Authentication (id = Firebase UID);
+ * this table just mirrors it on-device for fast offline access (Table 9, Task 2).
+ */
+@Entity(tableName = "user_table")
+data class UserTable(
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: String,
+    @ColumnInfo(name = "full_name")
+    val fullName: String,
+    @ColumnInfo(name = "email")
+    val email: String,
+    @ColumnInfo(name = "household_size")
+    val householdSize: Int = 1,
+    @ColumnInfo(name = "is_verified")
+    val isVerified: Boolean = false,
+    @ColumnInfo(name = "two_factor_enabled")
+    val twoFactorEnabled: Boolean = false,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Long = System.currentTimeMillis()
+)

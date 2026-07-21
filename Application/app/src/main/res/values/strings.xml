@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EcoPantry</string>
+    <string name="expiry_notification_channel_id">ecopantry_expiry_alerts</string>
+    <string name="expiry_notification_channel_name">Food Expiry Alerts</string>
+    <string name="donation_notification_channel_id">ecopantry_donation_alerts</string>
+    <string name="donation_notification_channel_name">Donation Updates</string>
+</resources>
