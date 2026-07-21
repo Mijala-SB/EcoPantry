@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200127873519",
+    "project_id": "ecopantry-de100",
+    "storage_bucket": "ecopantry-de100.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200127873519:android:71bdedc65681446229761a",
+        "android_client_info": {
+          "package_name": "com.mishba.ecopantryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnYrKW2uGIJksyDDFOvWWDzJq7aDrv_F4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
