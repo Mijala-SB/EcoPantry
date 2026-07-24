@@ -171,6 +171,19 @@ private fun OtpVerificationForm(
         if (state.registrationComplete) navigateToHome()
     }
 
+    if (state.showSuccessDialog) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text("Success!") },
+            text = { Text("Your email has been verified successfully.") },
+            confirmButton = {
+                Button(onClick = { vm.completeRegistration() }) {
+                    Text("Continue")
+                }
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -209,7 +222,7 @@ private fun OtpVerificationForm(
         if (state.otpError.isNotBlank()) InputFieldError(state.otpError)
 
         Button(
-            onClick = { vm.verifyOtp(navigateToHome) },
+            onClick = { vm.verifyOtp() },
             modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(12.dp),
             enabled = !state.isLoading
