@@ -66,3 +66,4 @@ class BrowseDonationScreenViewModel(context: Context) : ViewModel() {
         }
     }
 }
+
