@@ -87,7 +87,7 @@ class LoginScreenViewModel(context: Context) : ViewModel() {
             }
         }
     }
-
+//
     fun sendPasswordReset() {
         val email = _uiState.value.email
         if (email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
