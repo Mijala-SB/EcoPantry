@@ -3,6 +3,7 @@ package com.mishba.ecopantryapp.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,6 +45,12 @@ fun ProfileScreen(
     var showHouseholdDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loggedOut) { if (state.loggedOut) navigateToLogin() }
+
+    val isDark = when (state.darkMode) {
+        LightOrDarkMode.System -> isSystemInDarkTheme()
+        LightOrDarkMode.Light -> false
+        LightOrDarkMode.Dark -> true
+    }
 
     if (showLogoutConfirm) {
         AlertDialog(
@@ -92,7 +99,9 @@ fun ProfileScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ecopantry_logo),
+                    painter = painterResource(
+                        id = if (isDark) R.drawable.ecopantry_logo_white else R.drawable.ecopantry_logo
+                    ),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
