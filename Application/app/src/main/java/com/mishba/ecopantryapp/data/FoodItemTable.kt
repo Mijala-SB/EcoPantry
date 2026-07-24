@@ -39,3 +39,4 @@ data class FoodItemTable(
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long = System.currentTimeMillis()
 )
+
