@@ -131,3 +131,4 @@ private fun DetailRow(label: String, value: String) {
         Text(value, fontWeight = FontWeight.Medium)
     }
 }
+
