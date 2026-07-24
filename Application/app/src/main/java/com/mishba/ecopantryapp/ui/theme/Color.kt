@@ -2,7 +2,7 @@ package com.mishba.ecopantryapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// ── EcoPantry Green palette ────────────────────────────────────────────────
+//  EcoPantry Green palette
 val EcoGreen80      = Color(0xFF8FD99B)   // light variant (dark theme primary)
 val EcoGreenGrey80   = Color(0xFFB9D6B4)   // light secondary
 val EcoAmber80       = Color(0xFFFFCC80)   // tertiary (warm accent - expiry alerts)
