@@ -4,11 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * Local (Room/SQLite) cache of the signed-in user's profile.
- * The authoritative record lives in Firebase Authentication (id = Firebase UID);
- * this table just mirrors it on-device for fast offline access (Table 9, Task 2).
- */
+
 @Entity(tableName = "user_table")
 data class UserTable(
     @PrimaryKey
