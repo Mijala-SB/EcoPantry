@@ -60,7 +60,7 @@ class ProfileScreenViewModel(context: Context) : ViewModel() {
         val user = _uiState.value.user ?: return
         viewModelScope.launch { repository.updateUser(user.copy(householdSize = size)) }
     }
-
+//
     fun logout() {
         viewModelScope.launch {
             authRepository.signOut()
