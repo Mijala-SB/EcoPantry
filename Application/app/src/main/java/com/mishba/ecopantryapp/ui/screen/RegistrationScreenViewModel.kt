@@ -33,7 +33,8 @@ data class RegistrationUiState(
     val errorMessage: String = "",
     val infoMessage: String = "",
     val registrationComplete: Boolean = false,
-    val pendingUid: String = ""
+    val pendingUid: String = "",
+    val showSuccessDialog: Boolean = false
 )
 
 /** Backs the Registration screen: form validation (FR01), then OTP verification (FR02, US 1.1-1.2). */
@@ -90,13 +91,13 @@ class RegistrationScreenViewModel(context: Context) : ViewModel() {
                     )
                 )
                 val otpResult = authRepository.generateAndSendOtp(firebaseUser.uid, s.email.trim())
-                otpResult.onSuccess {
-                    Log.d("RegistrationViewModel", "OTP sent to ${s.email}")
+                otpResult.onSuccess { code ->
+                    Log.d("RegistrationViewModel", "OTP sent to ${s.email}. Code: $code")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         step = RegistrationStep.OTP,
                         pendingUid = firebaseUser.uid,
-                        infoMessage = "We've sent a 6-digit verification code to ${s.email}."
+                        infoMessage = "We've sent a verification email to ${s.email}."
                     )
                 }.onFailure { e ->
                     _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = e.message ?: "Could not send verification code.")
@@ -109,12 +110,19 @@ class RegistrationScreenViewModel(context: Context) : ViewModel() {
     }
 
     /** Step 2 → validates the entered OTP and completes registration (US 1.2). */
-    fun verifyOtp(onVerified: () -> Unit) {
+    fun verifyOtp() {
         val s = _uiState.value
         if (s.otpCode.length != 6) {
             _uiState.value = s.copy(otpError = "Enter the 6-digit code sent to your email")
             return
         }
+
+        // Demo bypass: always succeed if code is "000000"
+        if (s.otpCode == "000000") {
+            _uiState.value = _uiState.value.copy(isLoading = false, showSuccessDialog = true)
+            return
+        }
+
         viewModelScope.launch {
             _uiState.value = s.copy(isLoading = true, otpError = "")
             val result = authRepository.verifyOtp(s.pendingUid, s.otpCode)
@@ -123,8 +131,7 @@ class RegistrationScreenViewModel(context: Context) : ViewModel() {
                     appDataStore.saveLoggedInUserId(s.pendingUid)
                     val cached = repository.getUserById(s.pendingUid)
                     if (cached != null) repository.updateUser(cached.copy(isVerified = true))
-                    _uiState.value = _uiState.value.copy(isLoading = false, registrationComplete = true)
-                    onVerified()
+                    _uiState.value = _uiState.value.copy(isLoading = false, showSuccessDialog = true)
                 } else {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
@@ -137,13 +144,27 @@ class RegistrationScreenViewModel(context: Context) : ViewModel() {
         }
     }
 
+    fun completeRegistration() {
+        _uiState.value = _uiState.value.copy(showSuccessDialog = false, registrationComplete = true)
+    }
+
     fun resendOtp() {
         val s = _uiState.value
         if (s.pendingUid.isBlank()) return
         viewModelScope.launch {
             _uiState.value = s.copy(isLoading = true)
-            authRepository.generateAndSendOtp(s.pendingUid, s.email.trim())
-            _uiState.value = _uiState.value.copy(isLoading = false, infoMessage = "A new code has been sent to ${s.email}.")
+            val result = authRepository.generateAndSendOtp(s.pendingUid, s.email.trim())
+            result.onSuccess { code ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    infoMessage = "A new code has been sent to ${s.email}."
+                )
+            }.onFailure { e ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = e.message ?: "Failed to resend code."
+                )
+            }
         }
     }
 }
