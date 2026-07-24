@@ -33,6 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mishba.ecopantryapp.R
 import com.mishba.ecopantryapp.ui.widget.InputFieldError
 
+//.
 @Composable
 fun LoginScreen(
     navigateToRegister: () -> Unit,
