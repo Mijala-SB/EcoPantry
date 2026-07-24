@@ -7,6 +7,11 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Room DAO (Data Access Object) for the "user_table" table.
+ * Defines all database operations (CRUD) available for UserTable entities.
+ * Room generates the implementation of this interface automatically at compile time.
+ */
 @Dao
 interface UserTableDao {
 
