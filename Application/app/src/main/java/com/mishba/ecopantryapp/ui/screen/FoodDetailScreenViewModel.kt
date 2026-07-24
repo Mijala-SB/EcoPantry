@@ -65,3 +65,4 @@ class FoodDetailScreenViewModel(context: Context, private val itemId: String) : 
         }
     }
 }
+
