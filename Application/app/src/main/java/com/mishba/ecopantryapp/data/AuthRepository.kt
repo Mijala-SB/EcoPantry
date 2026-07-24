@@ -9,15 +9,6 @@ import kotlin.random.Random
 /**
  * Wraps Firebase Authentication for EcoPantry's registration / login / 2FA flows
  * (FR01-FR03, US 1.1-1.3).
- *
- * OTP delivery note: FR02 calls for a 6-digit email OTP. A pure Android client
- * cannot send custom emails on its own — that requires a small backend (e.g. a
- * Firebase Cloud Function + mail provider). This repository therefore implements
- * the full OTP *generation, storage and verification* logic against Firestore
- * (`users/{uid}.otpCode` / `otpExpiry`) exactly as specified, and also triggers
- * Firebase Authentication's built-in verification email as the real message that
- * lands in the user's inbox. Wiring a Cloud Function to email the same 6-digit
- * code is a drop-in replacement once a backend is available.
  */
 class AuthRepository(
     private val firestore: FirebaseFirestore = ServiceProvider.firestore
@@ -55,16 +46,20 @@ class AuthRepository(
         Result.failure(e)
     }
 
-    /** Generates a fresh 6-digit OTP, stores it (10 min expiry) and fires the verification email. */
-    suspend fun generateAndSendOtp(uid: String, email: String): Result<Unit> = try {
+    /** Generates a fresh 6-digit OTP and stores it. Returns the code for demo display. */
+    suspend fun generateAndSendOtp(uid: String, email: String): Result<String> = try {
         val code = Random.nextInt(100000, 999999).toString()
         val expiry = System.currentTimeMillis() + (10 * 60 * 1000L) // 10-minute expiry
         firestore.collection("users").document(uid)
             .set(mapOf("otpCode" to code, "otpExpiry" to expiry), com.google.firebase.firestore.SetOptions.merge())
             .await()
+        
+        // Note: Firebase's built-in sendEmailVerification() sends a link, not a code.
+        // For production, you would trigger a Cloud Function here to send a custom email.
         auth.currentUser?.sendEmailVerification()?.await()
-        Log.d("AuthRepository", "generateAndSendOtp() code=$code (demo-only log; production sends via Cloud Function)")
-        Result.success(Unit)
+        
+        Log.d("AuthRepository", "generateAndSendOtp() code=$code")
+        Result.success(code)
     } catch (e: Exception) {
         Result.failure(e)
     }
