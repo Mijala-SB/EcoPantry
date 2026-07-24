@@ -1,0 +1,7 @@
+package com.mishba.ecopantryapp.model
+
+enum class LightOrDarkMode {
+    Light,
+    Dark,
+    System
+}
