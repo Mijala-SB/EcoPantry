@@ -21,7 +21,6 @@ data class BrowseDonationUiState(
     val errorMessage: String = ""
 )
 
-/** Backs the Browse Donations screen with category/city filters (FR08, US 5.1, 5.3). */
 class BrowseDonationScreenViewModel(context: Context) : ViewModel() {
 
     private val donationRepository = DonationRepository()
@@ -57,13 +56,11 @@ class BrowseDonationScreenViewModel(context: Context) : ViewModel() {
             val s = _uiState.value
             val result = donationRepository.browseAvailableDonations(s.categoryFilter, s.cityFilter)
             result.onSuccess { list ->
-                // Hide the signed-in user's own listings from the browse feed.
-                val filtered = list.filter { it.donorId != s.currentUserId }
-                _uiState.value = _uiState.value.copy(donations = filtered, isLoading = false)
+                // REMOVED: filter that hid own donations – donors can now see their own listings
+                _uiState.value = _uiState.value.copy(donations = list, isLoading = false)
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = e.message ?: "Could not load donations.")
             }
         }
     }
 }
-

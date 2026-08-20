@@ -120,4 +120,3 @@ private fun DetailLine(label: String, value: String) {
         Text(value, fontWeight = FontWeight.Medium)
     }
 }
-

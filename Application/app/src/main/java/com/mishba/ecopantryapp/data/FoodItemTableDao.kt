@@ -39,4 +39,18 @@ interface FoodItemTableDao {
 
     @Query("SELECT COUNT(*) FROM food_item_table WHERE user_id = :userId AND status = 'ACTIVE'")
     fun getActiveItemCount(userId: String): Flow<Int>
+
+    /** Active items not already reserved for another meal - candidates for meal planning (UC6). */
+    @Query(
+        "SELECT * FROM food_item_table WHERE user_id = :userId AND status = 'ACTIVE' " +
+        "AND (reserved_for_meal_plan_id IS NULL OR reserved_for_meal_plan_id = :excludingPlanId) " +
+        "ORDER BY expiry_date ASC"
+    )
+    fun getAvailableForMealPlanning(userId: String, excludingPlanId: String? = null): Flow<List<FoodItemTable>>
+
+    @Query("UPDATE food_item_table SET reserved_for_meal_plan_id = :planId WHERE item_id IN (:itemIds)")
+    suspend fun reserveItems(itemIds: List<String>, planId: String)
+
+    @Query("UPDATE food_item_table SET reserved_for_meal_plan_id = NULL WHERE reserved_for_meal_plan_id = :planId")
+    suspend fun releaseItemsForPlan(planId: String)
 }

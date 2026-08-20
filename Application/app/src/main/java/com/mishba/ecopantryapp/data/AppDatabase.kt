@@ -9,6 +9,7 @@ import androidx.room.TypeConverters
 import com.mishba.ecopantryapp.model.FoodCategory
 import com.mishba.ecopantryapp.model.FoodStatus
 import com.mishba.ecopantryapp.model.LogActionType
+import com.mishba.ecopantryapp.model.MealSlot
 import com.mishba.ecopantryapp.model.NotificationType
 import com.mishba.ecopantryapp.model.StorageArea
 
@@ -19,9 +20,10 @@ import com.mishba.ecopantryapp.model.StorageArea
         LocationTable::class,
         FoodItemTable::class,
         FoodLogTable::class,
-        NotificationTable::class
+        NotificationTable::class,
+        MealPlanTable::class
     ],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -35,7 +37,12 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "ecopantry_database"
-                ).build().also { instance = it }
+                )
+                    // Meal planning (UC6) added the meal_plan_table + a new food_item column in
+                    // version 2. There's no shipped data to preserve yet, so a destructive
+                    // migration keeps things simple rather than hand-writing an ALTER TABLE.
+                    .fallbackToDestructiveMigration()
+                    .build().also { instance = it }
             }
         }
     }
@@ -45,6 +52,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getFoodItemTableDao(): FoodItemTableDao
     abstract fun getFoodLogTableDao(): FoodLogTableDao
     abstract fun getNotificationTableDao(): NotificationTableDao
+    abstract fun getMealPlanTableDao(): MealPlanTableDao
 }
 
 class AppTypeConverters {
@@ -82,4 +90,18 @@ class AppTypeConverters {
     @TypeConverter
     fun toNotificationType(value: String): NotificationType =
         runCatching { NotificationType.valueOf(value) }.getOrDefault(NotificationType.EXPIRY_ALERT)
+
+    @TypeConverter
+    fun fromMealSlot(value: MealSlot): String = value.name
+
+    @TypeConverter
+    fun toMealSlot(value: String): MealSlot =
+        runCatching { MealSlot.valueOf(value) }.getOrDefault(MealSlot.DINNER)
+
+    @TypeConverter
+    fun fromStringList(value: List<String>): String = value.joinToString(",")
+
+    @TypeConverter
+    fun toStringList(value: String): List<String> =
+        if (value.isBlank()) emptyList() else value.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 }

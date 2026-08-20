@@ -5,31 +5,28 @@ import android.app.NotificationManager
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import com.mishba.ecopantryapp.R
 import com.mishba.ecopantryapp.data.AppDataStore
 import com.mishba.ecopantryapp.data.AppDatabase
 import com.mishba.ecopantryapp.data.NotificationTable
 import com.mishba.ecopantryapp.data.Repository
 import com.mishba.ecopantryapp.model.NotificationType
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.tasks.await
 
-/**
- * Receives push notifications sent when a donation is claimed or a pickup is
- * confirmed (FR12, US 5.2). In production, a Cloud Function listening on
- * Firestore writes to the `donations` collection would trigger these pushes;
- * this service is the client-side receiver that surfaces them to the user.
- */
 class EcoPantryMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title ?: message.data["title"] ?: "Donation update"
         val body = message.notification?.body ?: message.data["body"] ?: "There is an update on your donation."
+        val relatedId = message.data["relatedId"] ?: message.data["donationId"]
 
         CoroutineScope(Dispatchers.IO).launch {
             val userId = AppDataStore(applicationContext).loggedInUserIdFlow().first() ?: return@launch
@@ -39,7 +36,8 @@ class EcoPantryMessagingService : FirebaseMessagingService() {
                     userId = userId,
                     type = NotificationType.DONATION_CLAIMED,
                     title = title,
-                    message = body
+                    message = body,
+                    relatedItemId = relatedId
                 )
             )
         }
@@ -48,8 +46,26 @@ class EcoPantryMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        // In production this token would be written to the user's Firestore document
-        // so a Cloud Function can target this device for donation-claim pushes.
+        // Store the token in Firestore (asynchronously)
+        CoroutineScope(Dispatchers.IO).launch {
+            val userId = AppDataStore(applicationContext).loggedInUserIdFlow().first()
+            if (userId != null) {
+                try {
+                    FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(userId)
+                        .update("fcmToken", token)
+                        .await()
+                } catch (e: Exception) {
+                    // If document doesn't exist yet, set it
+                    FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(userId)
+                        .set(mapOf("fcmToken" to token), com.google.firebase.firestore.SetOptions.merge())
+                        .await()
+                }
+            }
+        }
     }
 
     private fun postSystemNotification(title: String, body: String) {

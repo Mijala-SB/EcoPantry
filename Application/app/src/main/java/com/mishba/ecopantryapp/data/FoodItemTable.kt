@@ -34,9 +34,11 @@ data class FoodItemTable(
     val isPublic: Boolean = false,
     @ColumnInfo(name = "linked_donation_id")
     val linkedDonationId: String? = null,
+    /** Set while an item is reserved against a planned meal so it isn't double-booked (UC6). */
+    @ColumnInfo(name = "reserved_for_meal_plan_id", defaultValue = "NULL")
+    val reservedForMealPlanId: String? = null,
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long = System.currentTimeMillis()
 )
-

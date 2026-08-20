@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.mishba.ecopantryapp.data.AppDataStore
 import com.mishba.ecopantryapp.data.AppDatabase
 import com.mishba.ecopantryapp.data.DonationRepository
+import com.mishba.ecopantryapp.data.NotificationTable
 import com.mishba.ecopantryapp.data.Repository
 import com.mishba.ecopantryapp.model.Donation
+import com.mishba.ecopantryapp.model.NotificationType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -22,11 +24,10 @@ data class DonationDetailUiState(
     val errorMessage: String = ""
 )
 
-/** Backs the Donation detail screen and the claim flow (FR09, US 5.2). */
 class DonationDetailScreenViewModel(context: Context, private val donationId: String) : ViewModel() {
 
     private val donationRepository = DonationRepository()
-    private val repository = Repository(AppDatabase.getInstance(context))
+    private val repository = Repository(AppDatabase.getInstance(context)) // NEW
     private val appDataStore = AppDataStore(context)
 
     private val _uiState = MutableStateFlow(DonationDetailUiState())
@@ -58,10 +59,20 @@ class DonationDetailScreenViewModel(context: Context, private val donationId: St
                     claimSuccess = true,
                     donation = donation.copy(status = "CLAIMED", claimantId = s.currentUserId)
                 )
+                // --- NEW: Insert notification for the donor ---
+                val donorId = donation.donorId
+                val donorNotification = NotificationTable(
+                    userId = donorId,
+                    type = NotificationType.DONATION_CLAIMED,
+                    title = "Your donation was claimed",
+                    message = "${user?.fullName ?: "Someone"} has claimed your ${donation.itemName}.",
+                    relatedItemId = donation.donationId
+                )
+                repository.insertNotification(donorNotification)
+                // --- END NEW ---
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(isClaiming = false, errorMessage = e.message ?: "Could not claim this item.")
             }
         }
     }
 }
-

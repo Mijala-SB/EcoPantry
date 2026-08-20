@@ -7,9 +7,11 @@ import com.mishba.ecopantryapp.data.AppDataStore
 import com.mishba.ecopantryapp.data.AppDatabase
 import com.mishba.ecopantryapp.data.FoodItemTable
 import com.mishba.ecopantryapp.data.FoodLogTable
+import com.mishba.ecopantryapp.data.NotificationTable
 import com.mishba.ecopantryapp.data.Repository
 import com.mishba.ecopantryapp.model.FoodCategory
 import com.mishba.ecopantryapp.model.LogActionType
+import com.mishba.ecopantryapp.model.NotificationType
 import com.mishba.ecopantryapp.model.StorageArea
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +26,7 @@ data class AddEditFoodUiState(
     val category: FoodCategory = FoodCategory.OTHER,
     val storageArea: StorageArea = StorageArea.OTHER,
     val remarks: String = "",
-    val isPublic: Boolean = false,
+    // REMOVED: isPublic = false,
     val nameError: String = "",
     val quantityError: String = "",
     val expiryError: String = "",
@@ -32,7 +34,6 @@ data class AddEditFoodUiState(
     val saveComplete: Boolean = false
 )
 
-/** Backs both "Add Food" and "Edit Food" (FR05, FR06, US 2.1-2.3). */
 class AddEditFoodScreenViewModel(context: Context, private val editItemId: String?) : ViewModel() {
 
     private val repository = Repository(AppDatabase.getInstance(context))
@@ -58,7 +59,7 @@ class AddEditFoodScreenViewModel(context: Context, private val editItemId: Strin
                         category = item.category,
                         storageArea = item.storageLocation,
                         remarks = item.remarks,
-                        isPublic = item.isPublic
+                        // REMOVED: isPublic = item.isPublic
                     )
                 }
             }
@@ -71,7 +72,7 @@ class AddEditFoodScreenViewModel(context: Context, private val editItemId: Strin
     fun onCategoryChange(c: FoodCategory) { _uiState.value = _uiState.value.copy(category = c) }
     fun onStorageChange(s: StorageArea) { _uiState.value = _uiState.value.copy(storageArea = s) }
     fun onRemarksChange(v: String) { _uiState.value = _uiState.value.copy(remarks = v) }
-    fun onPublicToggle(v: Boolean) { _uiState.value = _uiState.value.copy(isPublic = v) }
+    // REMOVED: fun onPublicToggle(v: Boolean)
 
     fun save() {
         val s = _uiState.value
@@ -99,7 +100,7 @@ class AddEditFoodScreenViewModel(context: Context, private val editItemId: Strin
                     category = s.category,
                     storageLocation = s.storageArea,
                     remarks = s.remarks.trim(),
-                    isPublic = s.isPublic,
+                    // REMOVED: isPublic = s.isPublic,
                     updatedAt = System.currentTimeMillis()
                 )
             } else {
@@ -111,11 +112,24 @@ class AddEditFoodScreenViewModel(context: Context, private val editItemId: Strin
                     category = s.category,
                     storageLocation = s.storageArea,
                     remarks = s.remarks.trim(),
-                    isPublic = s.isPublic
+                    // REMOVED: isPublic = s.isPublic
                 )
             }
 
             if (isEdit) repository.updateFoodItem(item) else repository.insertFoodItem(item)
+
+            // --- NEW: Insert notification when adding a new item ---
+            if (!isEdit) {
+                val notification = NotificationTable(
+                    userId = currentUserId,
+                    type = NotificationType.INVENTORY_ALERT,
+                    title = "Food Added",
+                    message = "${item.itemName} was added to your inventory.",
+                    relatedItemId = item.itemId
+                )
+                repository.insertNotification(notification)
+            }
+            // --- END NEW ---
 
             repository.insertFoodLog(
                 FoodLogTable(

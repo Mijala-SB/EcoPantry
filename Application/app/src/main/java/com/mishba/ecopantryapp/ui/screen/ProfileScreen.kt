@@ -3,7 +3,6 @@ package com.mishba.ecopantryapp.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.filled.Security
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,12 +43,6 @@ fun ProfileScreen(
     var showHouseholdDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loggedOut) { if (state.loggedOut) navigateToLogin() }
-
-    val isDark = when (state.darkMode) {
-        LightOrDarkMode.System -> isSystemInDarkTheme()
-        LightOrDarkMode.Light -> false
-        LightOrDarkMode.Dark -> true
-    }
 
     if (showLogoutConfirm) {
         AlertDialog(
@@ -99,9 +91,7 @@ fun ProfileScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(
-                        id = if (isDark) R.drawable.ecopantry_logo_white else R.drawable.ecopantry_logo
-                    ),
+                    painter = painterResource(id = R.drawable.ecopantry_logo),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -124,29 +114,8 @@ fun ProfileScreen(
                         onClick = { showHouseholdDialog = true }
                     )
                     HorizontalDivider()
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Security, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                            Spacer(Modifier.width(12.dp))
-                            Column {
-                                Text("Two-Factor Authentication", fontWeight = FontWeight.Medium)
-                                Text(
-                                    "Extra email verification at login",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                        Switch(
-                            checked = state.user?.twoFactorEnabled ?: false,
-                            onCheckedChange = vm::setTwoFactorEnabled
-                        )
-                    }
-                    HorizontalDivider()
+                    // --- REMOVED the entire Two-Factor Authentication row ---
+                    // --- Only Dark Mode remains ---
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,

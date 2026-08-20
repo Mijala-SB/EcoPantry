@@ -26,4 +26,3 @@ interface LocationTableDao {
     @Query("SELECT * FROM location_table WHERE location_id = :id LIMIT 1")
     suspend fun getById(id: Int): LocationTable?
 }
-

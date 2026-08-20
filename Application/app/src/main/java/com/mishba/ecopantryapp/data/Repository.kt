@@ -87,4 +87,41 @@ class Repository(private val appDatabase: AppDatabase) {
 
     suspend fun countRecentExpiryAlertsFor(itemId: String, sinceMillis: Long): Int =
         appDatabase.getNotificationTableDao().countRecentExpiryAlertsFor(itemId, sinceMillis)
+
+    // ── Meal Planning (Use Case 6 - Plan Weekly Meals) ───────────────────
+    fun getAvailableForMealPlanning(userId: String, excludingPlanId: String? = null): Flow<List<FoodItemTable>> =
+        appDatabase.getFoodItemTableDao().getAvailableForMealPlanning(userId, excludingPlanId)
+
+    fun getMealPlansForWeek(userId: String, weekStart: Long, weekEnd: Long): Flow<List<MealPlanTable>> =
+        appDatabase.getMealPlanTableDao().getForWeek(userId, weekStart, weekEnd)
+
+    suspend fun getMealPlanById(id: String): MealPlanTable? = appDatabase.getMealPlanTableDao().getById(id)
+
+    /** Adds a meal to the plan and links the chosen ingredients to it (Typical Course step 6). */
+    suspend fun addMealToPlan(plan: MealPlanTable) = appDatabase.getMealPlanTableDao().insert(plan)
+
+    /** Removes a planned meal and releases any inventory items that were reserved for it. */
+    suspend fun deleteMealPlan(plan: MealPlanTable) {
+        appDatabase.getFoodItemTableDao().releaseItemsForPlan(plan.planId)
+        appDatabase.getMealPlanTableDao().delete(plan)
+    }
+
+    /**
+     * Confirms the week's plan (Typical Course step 7-8): reserves each meal's linked
+     * inventory items so they read as "reserved" elsewhere in the app, and returns the
+     * meals that still need a reminder scheduled.
+     */
+    suspend fun confirmWeekPlan(plans: List<MealPlanTable>): List<MealPlanTable> {
+        val needingReminders = mutableListOf<MealPlanTable>()
+        for (plan in plans) {
+            if (plan.linkedItemIds.isNotEmpty()) {
+                appDatabase.getFoodItemTableDao().reserveItems(plan.linkedItemIds, plan.planId)
+            }
+            if (!plan.reminderScheduled) {
+                appDatabase.getMealPlanTableDao().update(plan.copy(reminderScheduled = true))
+                needingReminders += plan
+            }
+        }
+        return needingReminders
+    }
 }

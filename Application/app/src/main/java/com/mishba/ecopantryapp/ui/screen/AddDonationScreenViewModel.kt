@@ -7,10 +7,12 @@ import com.mishba.ecopantryapp.data.AppDataStore
 import com.mishba.ecopantryapp.data.AppDatabase
 import com.mishba.ecopantryapp.data.DonationRepository
 import com.mishba.ecopantryapp.data.FoodLogTable
+import com.mishba.ecopantryapp.data.NotificationTable
 import com.mishba.ecopantryapp.data.Repository
 import com.mishba.ecopantryapp.model.Donation
 import com.mishba.ecopantryapp.model.FoodStatus
 import com.mishba.ecopantryapp.model.LogActionType
+import com.mishba.ecopantryapp.model.NotificationType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -21,7 +23,7 @@ data class AddDonationUiState(
     val quantity: String = "",
     val pickupAddress: String = "",
     val pickupCity: String = "",
-    val availability: String = "",
+    // REMOVED: val availability: String = "",
     val remarks: String = "",
     val addressError: String = "",
     val cityError: String = "",
@@ -31,7 +33,6 @@ data class AddDonationUiState(
     val errorMessage: String = ""
 )
 
-/** Converts an inventory item into a public donation listing in Firestore (FR07, US 5.1). */
 class AddDonationScreenViewModel(context: Context, private val sourceItemId: String) : ViewModel() {
 
     private val repository = Repository(AppDatabase.getInstance(context))
@@ -65,7 +66,7 @@ class AddDonationScreenViewModel(context: Context, private val sourceItemId: Str
 
     fun onAddressChange(v: String) { _uiState.value = _uiState.value.copy(pickupAddress = v, addressError = "") }
     fun onCityChange(v: String) { _uiState.value = _uiState.value.copy(pickupCity = v, cityError = "") }
-    fun onAvailabilityChange(v: String) { _uiState.value = _uiState.value.copy(availability = v) }
+    // REMOVED: fun onAvailabilityChange(v: String)
     fun onRemarksChange(v: String) { _uiState.value = _uiState.value.copy(remarks = v) }
 
     fun submit() {
@@ -94,7 +95,7 @@ class AddDonationScreenViewModel(context: Context, private val sourceItemId: Str
                 storageArea = storageArea,
                 pickupAddress = s.pickupAddress.trim(),
                 pickupCity = s.pickupCity.trim(),
-                availability = s.availability.trim(),
+                // REMOVED: availability = s.availability.trim(),
                 remarks = s.remarks.trim()
             )
 
@@ -112,6 +113,16 @@ class AddDonationScreenViewModel(context: Context, private val sourceItemId: Str
                         )
                     )
                 }
+                // Insert notification for the donor
+                val notification = NotificationTable(
+                    userId = userId,
+                    type = NotificationType.DONATION_CONFIRMED,
+                    title = "Donation Published",
+                    message = "Your donation of ${s.itemName} is now live for others to claim.",
+                    relatedItemId = donationId
+                )
+                repository.insertNotification(notification)
+
                 _uiState.value = _uiState.value.copy(isSaving = false, saveComplete = true)
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(isSaving = false, errorMessage = e.message ?: "Could not publish donation.")

@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.mishba.ecopantryapp.data.AppDatabase
 import com.mishba.ecopantryapp.data.FoodItemTable
 import com.mishba.ecopantryapp.data.FoodLogTable
+import com.mishba.ecopantryapp.data.NotificationTable
 import com.mishba.ecopantryapp.data.Repository
 import com.mishba.ecopantryapp.model.FoodStatus
 import com.mishba.ecopantryapp.model.LogActionType
+import com.mishba.ecopantryapp.model.NotificationType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +21,6 @@ data class FoodDetailUiState(
     val deleted: Boolean = false
 )
 
-/** Backs the Food Item detail screen: mark as used, delete, or hand off to Add Donation (FR06, FR07). */
 class FoodDetailScreenViewModel(context: Context, private val itemId: String) : ViewModel() {
 
     private val repository = Repository(AppDatabase.getInstance(context))
@@ -61,8 +62,17 @@ class FoodDetailScreenViewModel(context: Context, private val itemId: String) : 
                     actionType = LogActionType.DELETED, category = item.category.label
                 )
             )
+            // --- NEW: Insert notification on deletion ---
+            val notification = NotificationTable(
+                userId = item.userId,
+                type = NotificationType.INVENTORY_ALERT,
+                title = "Item Deleted",
+                message = "${item.itemName} was removed from your inventory.",
+                relatedItemId = item.itemId
+            )
+            repository.insertNotification(notification)
+            // --- END NEW ---
             _uiState.value = _uiState.value.copy(deleted = true)
         }
     }
 }
-

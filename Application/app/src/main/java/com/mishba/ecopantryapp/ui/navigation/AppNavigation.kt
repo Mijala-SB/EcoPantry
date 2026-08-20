@@ -18,6 +18,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.mishba.ecopantryapp.R
+import com.mishba.ecopantryapp.model.NotificationType
 import com.mishba.ecopantryapp.ui.screen.*
 import kotlinx.serialization.Serializable
 
@@ -32,6 +33,7 @@ import kotlinx.serialization.Serializable
 @Serializable data object ImpactRoute          : NavKey
 @Serializable data object ProfileRoute         : NavKey
 @Serializable data object NotificationRoute    : NavKey
+@Serializable data object MealPlanRoute        : NavKey
 
 @Serializable data class AddEditFoodRoute(val itemId: String? = null) : NavKey
 @Serializable data class FoodDetailRoute(val itemId: String)          : NavKey
@@ -194,7 +196,8 @@ private fun MainNavDisplay(backStack: MutableList<NavKey>) {
                     },
                     navigateToAddFood          = { backStack.add(AddEditFoodRoute()) },
                     navigateToNotifications    = { backStack.add(NotificationRoute) },
-                    navigateToFoodDetail       = { id -> backStack.add(FoodDetailRoute(id)) }
+                    navigateToFoodDetail       = { id -> backStack.add(FoodDetailRoute(id)) },
+                    navigateToPlanMeals        = { backStack.add(MealPlanRoute) }
                 )
             }
 
@@ -229,8 +232,39 @@ private fun MainNavDisplay(backStack: MutableList<NavKey>) {
                 )
             }
 
+            // Inside the entryProvider block, replace the existing entry<NotificationRoute> with:
+
             entry<NotificationRoute> {
-                NotificationScreen(navigateBack = { backStack.removeLastOrNull() })
+                NotificationScreen(
+                    navigateBack = { backStack.removeLastOrNull() },
+                    onNotificationClick = { notification ->
+                        when (notification.type) {
+                            NotificationType.EXPIRY_ALERT -> {
+                                notification.relatedItemId?.let { itemId ->
+                                    backStack.add(FoodDetailRoute(itemId))
+                                } ?: run {
+                                    // optional: show toast that item no longer exists
+                                }
+                            }
+                            NotificationType.DONATION_CLAIMED,
+                            NotificationType.DONATION_CONFIRMED -> {
+                                notification.relatedItemId?.let { donationId ->
+                                    backStack.add(DonationDetailRoute(donationId))
+                                }
+                            }
+                            else -> {
+                                // handle other types if needed (e.g., INVENTORY_ALERT -> FoodDetailRoute)
+                                notification.relatedItemId?.let { id ->
+                                    backStack.add(FoodDetailRoute(id))
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+
+            entry<MealPlanRoute> {
+                PlanMealScreen(navigateBack = { backStack.removeLastOrNull() })
             }
 
             entry<AddEditFoodRoute> { key ->

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.VolunteerActivism
@@ -38,7 +39,8 @@ fun HomeScreen(
     navigateToProfile: () -> Unit,
     navigateToAddFood: () -> Unit,
     navigateToNotifications: () -> Unit,
-    navigateToFoodDetail: (String) -> Unit
+    navigateToFoodDetail: (String) -> Unit,
+    navigateToPlanMeals: () -> Unit
 ) {
     val context = LocalContext.current
     val vm: HomeScreenViewModel = viewModel(
@@ -127,6 +129,15 @@ fun HomeScreen(
                         onClick = navigateToBrowseDonations
                     )
                 }
+            }
+
+            item {
+                QuickActionCard(
+                    label = "Plan Weekly Meals",
+                    icon = Icons.Default.CalendarMonth,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = navigateToPlanMeals
+                )
             }
 
             item {

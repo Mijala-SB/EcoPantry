@@ -97,13 +97,7 @@ fun AddDonationScreen(
             )
             if (state.cityError.isNotBlank()) InputFieldError(state.cityError)
 
-            OutlinedTextField(
-                value = state.availability,
-                onValueChange = vm::onAvailabilityChange,
-                label = { Text("Availability (e.g. Weekday evenings)") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
+            // --- REMOVED the "Availability" field ---
 
             OutlinedTextField(
                 value = state.remarks,
