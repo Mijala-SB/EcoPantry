@@ -217,3 +217,4 @@ class PlanMealScreenViewModel(context: Context) : ViewModel() {
         return if (reminderTime > now) reminderTime - now else TimeUnit.MINUTES.toMillis(5)
     }
 }
+
