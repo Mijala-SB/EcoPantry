@@ -33,3 +33,4 @@ interface MealPlanTableDao {
     @Query("DELETE FROM meal_plan_table WHERE plan_id = :id")
     suspend fun deleteById(id: String)
 }
+
