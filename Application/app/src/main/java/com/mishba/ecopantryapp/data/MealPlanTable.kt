@@ -37,3 +37,4 @@ data class MealPlanTable(
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis()
 )
+
